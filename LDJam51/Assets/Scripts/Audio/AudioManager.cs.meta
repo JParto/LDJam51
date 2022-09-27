@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 82fcdca433c1b4b42b58e10f41ab6a88
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - audioMixer: {fileID: 24100000, guid: 14beb46c43473574ea87a9201916ce23, type: 2}
+  - _music: {instanceID: 0}
+  - _pool: {fileID: 11400000, guid: 82e5379573c0b744c9504c0f1fe0910c, type: 2}
+  - _SFXEventChannel: {fileID: 11400000, guid: f895dc2b57b57234896338f719296865, type: 2}
+  - _SFXVolumeEventChannel: {fileID: 11400000, guid: 25be1cd82ecc51b4c9e62ea98865ff66, type: 2}
+  - _musicVolumeEventChannel: {fileID: 11400000, guid: 4276e02ca625f7243acf14c27853d939, type: 2}
+  - _masterVolumeEventChannel: {fileID: 11400000, guid: 2fab0e47e003da442818c4368dbe2659, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
