@@ -17,6 +17,8 @@ public class AudioManager : MonoBehaviour
     [Header("Music")]
     private SoundEmitter _musicEmitter;
     [SerializeField] private SO_Sound _music;
+    private SoundEmitter _ambienceEmitter;
+    [SerializeField] private SO_Sound _ambience;
 
 
     [Header("Sound Emitter Pool")]
@@ -43,6 +45,8 @@ public class AudioManager : MonoBehaviour
             _pool.SetParent(this.transform);
             DontDestroyOnLoad(gameObject);
         }
+
+        PlayAmbience(_ambience);
     }
 
     private void OnEnable()
@@ -70,6 +74,12 @@ public class AudioManager : MonoBehaviour
         _musicEmitter = _pool.Request();
 
         _musicEmitter.PlaySound(music, transform.position);
+    }
+
+    public void PlayAmbience(SO_Sound amb){
+        _ambienceEmitter = _pool.Request();
+
+        _ambienceEmitter.PlaySound(amb, transform.position);
     }
 
     public void PlayGlobalMusic(bool play){

@@ -11,7 +11,8 @@ public class FollowMousePosition : MonoBehaviour
     private readonly string _rightClickInput = "RightClick";
     private InputAction _mouse;
     private InputAction _leftClick;
-    private InputAction _rightClick;
+    // private InputAction _rightClick;
+    private bool _useClick;
 
     [SerializeField] private float _maxMagnitude;
     private float _maxMagnitudeSquared { get {return _maxMagnitude * _maxMagnitude;}}
@@ -44,6 +45,8 @@ public class FollowMousePosition : MonoBehaviour
 
         _leftClick.performed += ctx => LeftClickStart();
         _leftClick.canceled  += ctx => LeftClickEnd();
+
+        _useClick = true;
     }
 
     void Update(){
@@ -69,7 +72,7 @@ public class FollowMousePosition : MonoBehaviour
     void LeftClickEnd(){
         _clickedLeft = false;
 
-        if (!_input.enabled){
+        if (!_useClick){
             return;
         }
 
@@ -87,9 +90,9 @@ public class FollowMousePosition : MonoBehaviour
     }
 
     IEnumerator PauseForNextCharacter(){
-        _input.enabled = false;
+        _useClick = false;
         yield return new WaitForSeconds(2f);
-        _input.enabled = true;
+        _useClick = true;
     }
 
     private void Restart(){

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ab74d3fc07c9ec4ca95bdd45901a394, type: 3}
+  m_Name: Love
+  m_EditorClassIdentifier: 
+  name: Love
+  mixerGroup: {fileID: 2053684217571979495, guid: 14beb46c43473574ea87a9201916ce23, type: 2}
+  clips:
+  - {fileID: 8300000, guid: cc821365815d55340ba29e2f94c6c649, type: 3}
+  volume: 0.5
+  pitch: 1
+  loop: 0

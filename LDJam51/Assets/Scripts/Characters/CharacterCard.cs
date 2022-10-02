@@ -5,14 +5,21 @@ using UnityEngine;
 public class CharacterCard : MonoBehaviour
 {
     private int maxPrefAmount => Preferences.preferenceAmount;
-    private readonly int easyAmount = 4;
+    private readonly int easyAmount = 5;
     private readonly int mediumAmount = 7;
-    private readonly int hardAmount = 10;
+    private readonly int hardAmount = 11;
 
     private Animator _animator;
     [SerializeField] private PlayerManager _playerManager;
-    [SerializeField] private Sprite[] _spritePool;
+    [SerializeField] private CharacterCanvas _canvas;
+    [SerializeField] private SO_CharacterSprite[] _spritePool;
     [SerializeField] private SpriteRenderer _sprite;
+    [SerializeField] private Transform _mouseRotationTransform;
+    [SerializeField] private Transform _smoking;
+    [SerializeField] private Transform _drinking;
+    [SerializeField] private Transform _kids;
+    [SerializeField] private Transform _marriage;
+    [SerializeField] private Transform _humour;
     [SerializeField] private Preferences _preference;
     
     [Header("For animation")]
@@ -28,20 +35,36 @@ public class CharacterCard : MonoBehaviour
     [SerializeField] private SO_BoolEventChannel _swipeRightEventChannel;
     [SerializeField] private SO_BoolEventChannel _releaseLeftClickEventChannel;
     [SerializeField] private SO_VoidEventChannel _timeUpEventChannel;
+    [SerializeField] private SO_VoidEventChannel _startEncounterEventChannel;
     private List<int> _indices;
+    [SerializeField] private SO_Sentences _sentences;
+    private List<List<List<string>>> _strings;
 
     void Awake(){
         _animator = GetComponent<Animator>();
+        _playerManager = FindObjectOfType<PlayerManager>();
+        _canvas = FindObjectOfType<CharacterCanvas>();
+        _strings = _sentences.Sentences();
     }
 
     void Start(){
-        CleanSlate();
+        // CleanSlate();
+        StartCoroutine(StartSequence());
     }
 
-    void CleanSlate(){
+    IEnumerator StartSequence(){
+        yield return new WaitForSeconds(1f);
+        StartEncounter();
+    }
+
+    void CleanSlate(){ // used in animation at the start of entering
         SetRandomPreference();
         SetRandomSprite();
         ResetPosition();
+    }
+
+    public void Animation_Evaluate(){
+        _evaluateEventChannel.RaiseEvent(_preference);
     }
 
     public void SetRandomPreference(){
@@ -78,7 +101,24 @@ public class CharacterCard : MonoBehaviour
     public void SetRandomSprite(){
         // set a random sprite from a pool
         int i = Random.Range(0, _spritePool.Length);
-        _sprite.sprite = _spritePool[i];
+        SO_CharacterSprite sprite = _spritePool[i];
+        _sprite.sprite = sprite.sprite;
+
+        // set the positions of the attributes
+        _smoking.gameObject.SetActive(_preference.smoking);
+        _smoking.localPosition = sprite.smokePosition;
+
+        _drinking.gameObject.SetActive(_preference.drinking);
+        _drinking.localPosition = sprite.drinkingPosition;
+
+        _kids.gameObject.SetActive(_preference.kids);
+        _kids.localPosition = sprite.kidsPosition;
+
+        _marriage.gameObject.SetActive(_preference.marriage);
+        _marriage.localPosition = sprite.MarriagePosition;
+
+        _humour.gameObject.SetActive(_preference.humour);
+        _humour.localPosition = sprite.humourPosition;
 
         // set a random color
         Color c = Random.ColorHSV(0f, 1f, 0f, 0.6f, 0.5f, 1f);
@@ -87,11 +127,11 @@ public class CharacterCard : MonoBehaviour
 
     private void WiggleWithAim(float val){
         if (_goRight){
-            transform.position = Vector3.Lerp(Vector3.zero, _rightSideSwipePosition.position, val);
-            transform.rotation = Quaternion.Lerp(Quaternion.identity, _rightSideSwipePosition.rotation, val);
+            _mouseRotationTransform.position = Vector3.Lerp(Vector3.zero, _rightSideSwipePosition.position, val);
+            _mouseRotationTransform.rotation = Quaternion.Lerp(Quaternion.identity, _rightSideSwipePosition.rotation, val);
         } else {
-            transform.position = Vector3.Lerp(Vector3.zero, _leftSideSwipePosition.position, val);
-            transform.rotation = Quaternion.Lerp(Quaternion.identity, _leftSideSwipePosition.rotation, val);
+            _mouseRotationTransform.position = Vector3.Lerp(Vector3.zero, _leftSideSwipePosition.position, val);
+            _mouseRotationTransform.rotation = Quaternion.Lerp(Quaternion.identity, _leftSideSwipePosition.rotation, val);
 
         }
     }
@@ -118,9 +158,56 @@ public class CharacterCard : MonoBehaviour
 
     private void ResetPosition(){
         // reset the position
-        transform.position = Vector3.zero;
-        transform.rotation = Quaternion.identity;
+        _mouseRotationTransform.position = Vector3.zero;
+        _mouseRotationTransform.rotation = Quaternion.identity;
 
+    }
+
+    private void StartEncounter(){
+        foreach (int index in _indices)
+        {
+            if (index < 7){
+                string s = GetRandomSentence(index);
+                _canvas.SpawnTextBubble(index, s);
+            } 
+            // visuals for smoking etc get done at sprite selection
+        }
+    }
+
+
+    private string GetRandomSentence(int index){
+        int attributeIndex = 0;
+        
+        switch (index)
+        {
+            case 0:
+                attributeIndex = (int)_preference.prefAnimal;
+                break;
+            case 1:
+                attributeIndex = (int)_preference.prefColor;
+                break;
+            case 2:
+                attributeIndex = (int)_preference.prefLifeStyle;
+                break;
+            case 3:
+                attributeIndex = (int)_preference.prefMusic;
+                break;
+            case 4:
+                attributeIndex = (int)_preference.prefSuperPower;
+                break;
+            case 5:
+                attributeIndex = (int)_preference.prefSound;
+                break;
+            case 6:
+                attributeIndex = (int)_preference.prefAge;
+                break;
+        }
+
+        var sentenceList = _strings[index][attributeIndex];
+        int r = Random.Range(0, sentenceList.Count);
+        string finalSentence = sentenceList[r];
+
+        return finalSentence;
     }
 
     private void Leave(){
@@ -134,6 +221,7 @@ public class CharacterCard : MonoBehaviour
         _swipeRightEventChannel.onEventRaised += GoRight;
         _releaseLeftClickEventChannel.onEventRaised += HandleEndSwipe;
         _timeUpEventChannel.onEventRaised += Leave;
+        _startEncounterEventChannel.onEventRaised += StartEncounter;
     }
 
     private void OnDestroy()
@@ -142,6 +230,7 @@ public class CharacterCard : MonoBehaviour
         _swipeRightEventChannel.onEventRaised -= GoRight;
         _releaseLeftClickEventChannel.onEventRaised -= HandleEndSwipe;
         _timeUpEventChannel.onEventRaised -= Leave;
+        _startEncounterEventChannel.onEventRaised -= StartEncounter;
     }
 
     #region TextBubbles

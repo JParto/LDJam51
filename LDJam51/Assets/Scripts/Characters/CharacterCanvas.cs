@@ -9,8 +9,16 @@ public class CharacterCanvas : MonoBehaviour
     [SerializeField] private CharacterTextBubble _textPrefab;
 
     #region TextBubbles
+        public void SpawnTextBubble(int index, string t){ // text should go away
+            CharacterTextBubble bubble = Instantiate(_textPrefab, _textParent.transform);
+            // Debug.LogWarning("TODO: dictionary voor textbubbles voor uitkiezen van strings");
+            string text = t;
+            bubble.Spawn(index, text);
+        }
+
         public bool EvaluatePrefIndex(int index){
             return _characterCard.EvaluatePrefIndex(index);
         }
+
     #endregion
 }

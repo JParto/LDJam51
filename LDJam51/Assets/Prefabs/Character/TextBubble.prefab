@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -312.5, y: 150}
-  m_SizeDelta: {x: 400, y: 100}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6666536570055825580
 CanvasRenderer:
@@ -166,6 +166,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 6666536570055825581}
+          m_TargetAssemblyTypeName: UnityEngine.UI.Graphic, UnityEngine.UI
+          m_MethodName: set_raycastTarget
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &6666536570055825583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,3 +194,41 @@ MonoBehaviour:
   _text: {fileID: 6666536570055825581}
   correctColor: {r: 0.02800417, g: 1, b: 0, a: 1}
   incorrectColor: {r: 1, g: 0, b: 0, a: 1}
+  _curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.2819302
+      outSlope: 3.2819302
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.108381465
+    - serializedVersion: 3
+      time: 0.33199412
+      value: 0.80971617
+      inSlope: 1.0061767
+      outSlope: 1.0061767
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _minDistance: 5
+  _maxDistance: 10
+  _dropOutDuration: 2
+  _matchEventChannel: {fileID: 11400000, guid: 60045fcaedea0084e9ada46d7b3fdd54, type: 2}
+  _timeUpEventChannel: {fileID: 11400000, guid: 0156ab44832f315468c6faa7f732c349, type: 2}

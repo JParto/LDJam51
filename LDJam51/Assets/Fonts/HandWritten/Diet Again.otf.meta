@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 1b91f08eca9823a49b1e4759aeff5d47
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Diet Again
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: da434b3bb60f58541b803b207cc68e70, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

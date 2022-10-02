@@ -14,6 +14,7 @@ public class Timer : MonoBehaviour
     [SerializeField] private SO_VoidEventChannel _timeUpEventChannel;
     [SerializeField] private SO_BoolEventChannel _releaseLeftClickEventChannel;
     [SerializeField] private SO_FloatEventChannel _stopInteractForSecondsEventChannel;
+    [SerializeField] private SO_VoidEventChannel _startEncounterEventChannel;
 
     void Start(){
         _currentSeconds = _maxSeconds;
@@ -71,6 +72,7 @@ public class Timer : MonoBehaviour
         _stopUpdate = true;
         yield return new WaitForSeconds(2f);
         _stopUpdate = false;
+        _startEncounterEventChannel.RaiseEvent();
     }
     private void OnEnable()
     {

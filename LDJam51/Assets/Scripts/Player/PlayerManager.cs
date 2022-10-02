@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    public static PlayerManager instance;
     [SerializeField] private SO_EvaluateCompatibilityEventChannel _evaluateEventChannel;
     [SerializeField] private SO_BoolEventChannel _matchEventChannel;
+    [SerializeField] private SO_BoolEventChannel _singleMatchEventChannel;
     private Preferences _playerPreferences;
     public Preferences playerPreferences {get {return _playerPreferences;}}
 
     public void Awake(){
+        if (instance == null){
+            instance = this;
+            DontDestroyOnLoad(this);
+        } else {
+            Destroy(gameObject);
+        }
         Debug.LogWarning("Need to remove randomization of player preferences");
         // _playerPreferences = Preferences.RandomizePreference();
         _playerPreferences = new Preferences();
@@ -23,13 +31,18 @@ public class PlayerManager : MonoBehaviour
         // bool match = Preferences.SamePrefs(_playerPreferences, charPrefs);
         int compat = Preferences.Compatibility(_playerPreferences, charPrefs);
 
-        bool match = compat <= 2;
+        bool match = compat <= 3;
+        Debug.LogFormat("{0}:{1}", compat, match);
 
         _matchEventChannel.RaiseEvent(match);
     }
 
     public bool EvaluateSingle(int index, Preferences charPrefs){
-        return Preferences.EvaluatePrefIndex(index, _playerPreferences, charPrefs);
+        bool b = Preferences.EvaluatePrefIndex(index, _playerPreferences, charPrefs);
+
+        _singleMatchEventChannel.RaiseEvent(b);
+
+        return b;
     }
 
     private void OnEnable()
